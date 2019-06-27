@@ -21,7 +21,7 @@ npm install
 2. GET: /v1/api/planets/:planet - Listar planeta baseado no nome como parâmetro
 3. POST: /v1/api/planets - Cadastro de um novo planeta
 4. DELETE: /v1/api/planets/:id - Remoção de um planeta baseado no ID
-5. GET: /v1/api/planets/:id - Listar planeta baseado no ID
+5. GET: /v1/api/planets/buscar/:id - Listar planeta baseado no ID
 
 ##
 
