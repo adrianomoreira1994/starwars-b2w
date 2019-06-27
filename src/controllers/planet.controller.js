@@ -1,7 +1,6 @@
 const PlanetRepository = require('../repositories/planet.repository');
 const ApiValidator = require('../validators/api.validator');
 const config = require('../../bin/config');
-const request = require('request');
 const axios = require('axios');
 
 class PlanetController {
@@ -15,6 +14,25 @@ class PlanetController {
           .send({ message: 'Nenhum planeta encontrado', success: false });
 
       return res.status(200).send({ data: planets, success: true });
+    } catch (error) {
+      res
+        .status(500)
+        .send({ message: 'Erro ao processoar sua requisição', success: false });
+    }
+  }
+
+  async getByName(req, res) {
+    try {
+      const planet = await PlanetRepository.fetchByName(req.params.planet);
+      if (!planet)
+        return res.status(200).send({
+          message: `Nenhum planeta com o nome [${
+            req.params.planet
+          }] encontrado`,
+          success: false
+        });
+
+      return res.status(200).send({ data: planet, success: true });
     } catch (error) {
       res
         .status(500)
@@ -53,28 +71,6 @@ class PlanetController {
     } catch (error) {
       console.log(error);
       res.status(500).send({ message: 'Erro ao processar sua requisição' });
-    }
-  }
-
-  async getByName(req, res) {
-    try {
-      const validator = new ApiValidator();
-      validator.isRequired(
-        req.body.name,
-        'Para buscar um planeta é necessário informar o nome dele'
-      );
-
-      if (!validator.isValid())
-        return res
-          .status(400)
-          .send({ errors: validator.errors(), success: false });
-
-      const planet = await PlanetRepository.fetchByName(req.body.name);
-      return res.status(200).send({ data: planet, success: true });
-    } catch (error) {
-      res
-        .status(500)
-        .send({ message: 'Erro ao processoar sua requisição', success: false });
     }
   }
 
