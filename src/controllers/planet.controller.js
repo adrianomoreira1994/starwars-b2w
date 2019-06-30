@@ -1,7 +1,5 @@
 const PlanetRepository = require('../repositories/planet.repository');
 const ApiValidator = require('../validators/api.validator');
-const config = require('../../bin/config');
-const axios = require('axios');
 
 class PlanetController {
   async index(req, res) {
