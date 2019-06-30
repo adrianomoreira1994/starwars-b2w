@@ -53,14 +53,7 @@ class PlanetController {
           .status(400)
           .send({ errors: validator.errors(), success: false });
 
-      const response = await axios.get(
-        `${config.swapi}planets/?search=${name}`
-      );
-      let apparitions = 0;
-      for (var data of response.data.results) {
-        apparitions = data.films.length;
-      }
-
+      const apparitions = await PlanetRepository.fetchApparitionsByPlanet(name);
       const planets = await PlanetRepository.register({
         name,
         terrain,

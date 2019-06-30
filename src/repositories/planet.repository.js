@@ -1,4 +1,6 @@
 const Planet = require('../schemas/planet.schema');
+const config = require('../../bin/config');
+const axios = require('axios');
 
 class PlanetRepository {
   constructor() {}
@@ -21,6 +23,18 @@ class PlanetRepository {
 
   async remove(id) {
     return await Planet.findOneAndDelete(id);
+  }
+
+  async fetchApparitionsByPlanet(planet) {
+    const response = await axios.get(
+      `${config.swapi}planets/?search=${planet}`
+    );
+    let apparitions = 0;
+    for (var data of response.data.results) {
+      apparitions = data.films.length;
+    }
+
+    return apparitions;
   }
 }
 
