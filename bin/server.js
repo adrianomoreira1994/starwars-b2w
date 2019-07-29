@@ -1,7 +1,8 @@
-const app = require('../src/app');
-const config = require('./config');
+require("dotenv/config");
 
-app.listen(config.port, () => {
-  console.log(`Api rodando na porta ${config.port}`);
-  console.log('Para finalizar a Api pressione Ctrl + C');
+const app = require("../src/app");
+
+app.listen(process.env.PORT, () => {
+  console.log(`Api rodando na porta ${process.env.PORT}`);
+  console.log("Para finalizar a Api pressione Ctrl + C");
 });

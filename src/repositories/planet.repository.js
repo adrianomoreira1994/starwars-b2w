@@ -1,6 +1,5 @@
-const Planet = require('../schemas/planet.schema');
-const config = require('../../bin/config');
-const axios = require('axios');
+const Planet = require("../schemas/planet.schema");
+const axios = require("axios");
 
 class PlanetRepository {
   constructor() {}
@@ -27,7 +26,7 @@ class PlanetRepository {
 
   async fetchApparitionsByPlanet(planet) {
     const response = await axios.get(
-      `${config.swapi}planets/?search=${planet}`
+      `${process.env.SWAPI}planets/?search=${planet}`
     );
     let apparitions = 0;
     for (var data of response.data.results) {

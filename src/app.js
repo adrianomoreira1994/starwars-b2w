@@ -1,8 +1,6 @@
-const config = require('../bin/config');
-
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
 class App {
   constructor() {
@@ -14,7 +12,7 @@ class App {
   }
 
   database() {
-    mongoose.connect(config.connectionString, { useNewUrlParser: true });
+    mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true });
   }
 
   middlewares() {
@@ -23,7 +21,7 @@ class App {
   }
 
   routes() {
-    this.express.use(require('./routes'));
+    this.express.use(require("./routes"));
   }
 }
 
