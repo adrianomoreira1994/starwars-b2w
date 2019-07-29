@@ -15,7 +15,7 @@ routes.get("/v1/api/planets/buscar/:id", authService.authorize, planetController
 // Users
 routes.post("/api/users/authenticate", userController.authenticate);
 routes.get("/api/users", authService.authorize, userController.index);
-routes.post("/api/users", authService.authorize, userController.store);
+routes.post("/api/users", userController.store);
 routes.delete("/api/users/:id", authService.authorize, userController.delete);
 
 module.exports = routes;

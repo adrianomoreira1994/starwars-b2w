@@ -27,9 +27,20 @@ class UserController {
       if (!ApiValidation.isValid)
         return res.status(200).send(ApiValidation.errors());
 
-      var created = await repository.register({ name, document, email, password });
+      const created = await repository.register({ name, document, email, password });
+      const payload = {
+        name: created.name,
+        email: created.email,
+        document: created.document,
+        id: created._id
+      }
 
-      return res.status(200).send(created);
+      return res.status(200).send({
+        success: true, data: {
+          token: authService.generateToken(payload),
+          user: created
+        }
+      });
     } catch (error) {
       return res.status(500).send(error);
     }
