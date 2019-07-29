@@ -14,6 +14,8 @@ const PlanetSchema = new mongoose.Schema({
     required: true
   },
   apparitions: Number
-});
+}, {
+    timestamps: true
+  });
 
 module.exports = mongoose.model('Planet', PlanetSchema);
