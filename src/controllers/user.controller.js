@@ -18,13 +18,10 @@ class UserController {
     try {
       const { name, document, email, password, confirmPassword } = req.body;
 
-      if (password !== confirmPassword) {
-        return res.status(200).send({ message: "As senhas não são iguais", sucess: false });
-      }
-
+      ApiValidation.isEquals(password, confirmPassword);
       ApiValidation.isFixedLen(document, 11, "Documento deve conter até 11 caracteres");
 
-      if (!ApiValidation.isValid)
+      if (!ApiValidation.isValid())
         return res.status(200).send(ApiValidation.errors());
 
       const created = await repository.register({ name, document, email, password });
@@ -36,10 +33,7 @@ class UserController {
       }
 
       return res.status(200).send({
-        success: true, data: {
-          token: authService.generateToken(payload),
-          user: created
-        }
+        success: true, data: { token: authService.generateToken(payload), user: created }
       });
     } catch (error) {
       return res.status(500).send(error);
@@ -70,13 +64,7 @@ class UserController {
       }
 
       const token = await authService.generateToken(payload);
-
-      res.status(200).send({
-        success: true, data: {
-          token,
-          user
-        }
-      });
+      res.status(200).send({ success: true, data: { token, user } });
 
     } catch (error) {
       res.status(500).send(error);
