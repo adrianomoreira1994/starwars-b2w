@@ -14,7 +14,9 @@ class PlanetController {
 
 
         return {
-          ...planet._doc,
+          name: planet.name,
+          climate: planet.climate,
+          terrain: planet.terrain,
           apparitions: aparicoes
         };
       }));
