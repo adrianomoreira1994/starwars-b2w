@@ -12,10 +12,9 @@ const PlanetSchema = new mongoose.Schema({
   terrain: {
     type: String,
     required: true
-  },
-  apparitions: Number
+  }
 }, {
-    timestamps: true
+    timestamps: true,
   });
 
 module.exports = mongoose.model('Planet', PlanetSchema);

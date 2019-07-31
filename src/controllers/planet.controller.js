@@ -6,10 +6,21 @@ class PlanetController {
     try {
       const planets = await PlanetRepository.fetch();
 
+      const planetas = Promise.all(planets.map(async function (planet) {
+        let aparicoes = await PlanetRepository.fetchApparitionsByPlanet(planet.name);
+
+
+        return {
+          ...planet._doc,
+          apparitions: aparicoes
+        };
+      }));
+
+
       if (!planets.length)
         res.status(404).send({ message: "Nenhum planeta encontrado", success: false });
 
-      return res.status(200).send({ data: planets, success: true });
+      return res.status(200).send({ data: await planetas, success: true });
     } catch (error) {
       return res
         .status(500)
@@ -45,8 +56,7 @@ class PlanetController {
           .status(400)
           .send({ errors: validation.errors(), success: false });
 
-      const apparitions = await PlanetRepository.fetchApparitionsByPlanet(name);
-      const planets = await PlanetRepository.register({ name, terrain, climate, apparitions });
+      const planets = await PlanetRepository.register({ name, terrain, climate });
       return res.status(201).send({ success: true, data: planets });
     } catch (error) {
       return res

@@ -12,6 +12,7 @@ class App {
   }
 
   database() {
+    mongoose.Promise = global.Promise;
     mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true });
   }
 
