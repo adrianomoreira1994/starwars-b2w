@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const md5 = require("md5");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -10,12 +10,25 @@ const UserSchema = new mongoose.Schema(
     document: {
       type: String,
       required: true,
-      maxlength: 11
+      maxlength: 11,
+      index: {
+        unique: true
+      }
     },
     username: {
       type: String,
       required: true,
-      maxlength: 11
+      maxlength: 11,
+      index: {
+        unique: true
+      }
+    },
+    email: {
+      type: String,
+      required: true,
+      index: {
+        unique: true
+      }
     },
     password: {
       type: String,
@@ -26,11 +39,12 @@ const UserSchema = new mongoose.Schema(
     timestamps: true
   }
 );
-UserSchema.pre("save", function (next) {
+
+UserSchema.pre("save", function(next) {
   if (this.password) {
-    let salt = bcrypt.genSaltSync(10);
-    this.password = bcrypt.hashSync(this.password, salt);
+    this.password = md5(this.password + process.env.SECRET);
   }
+
   next();
 });
 

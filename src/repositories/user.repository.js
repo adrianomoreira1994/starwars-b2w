@@ -28,6 +28,15 @@ class UserRepository {
   async remove(id) {
     await User.findByIdAndRemove(id);
   }
+
+  async authenticate(data) {
+    const response = await User.findOne({
+      username: data.username,
+      password: data.password
+    });
+
+    return response;
+  }
 }
 
 module.exports = new UserRepository();
