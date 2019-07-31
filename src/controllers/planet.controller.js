@@ -9,9 +9,8 @@ class PlanetController {
       if (!planets.length)
         res.status(404).send({ message: "Nenhum planeta encontrado", success: false });
 
-      const planetas = Promise.all(planets.map(async function (planet) {
+      const planetas = Promise.all(planets.map(async planet => {
         let aparicoes = await PlanetRepository.fetchApparitionsByPlanet(planet.name);
-
 
         return {
           name: planet.name,
