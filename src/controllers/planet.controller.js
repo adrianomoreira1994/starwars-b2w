@@ -1,5 +1,5 @@
 const PlanetRepository = require("../repositories/planet.repository");
-const ApiValidator = require("../validators/api.validator");
+const ApiValidation = require("../validators/api.validator");
 
 class PlanetController {
   async index(req, res) {
@@ -7,11 +7,11 @@ class PlanetController {
       const planets = await PlanetRepository.fetch();
 
       if (!planets.length)
-        res.status(200).send({ message: "Nenhum planeta encontrado", success: false });
+        res.status(404).send({ message: "Nenhum planeta encontrado", success: false });
 
       return res.status(200).send({ data: planets, success: true });
     } catch (error) {
-      res
+      return res
         .status(500)
         .send({ message: "Erro ao processoar sua requisição", success: false });
     }
@@ -21,13 +21,13 @@ class PlanetController {
     try {
       const planet = await PlanetRepository.fetchByName(req.params.planet);
       if (!planet)
-        return res.status(200).send({ message: `Nenhum planeta com o nome [${req.params.planet}] encontrado`, success: false });
+        return res.status(404).send({ message: `Nenhum planeta com o nome [${req.params.planet}] encontrado`, success: false });
 
       return res.status(200).send({ data: planet, success: true });
     } catch (error) {
-      res
+      return res
         .status(500)
-        .send({ message: "Erro ao processoar sua requisição", success: false });
+        .send({ message: "Erro ao processoar sua requisição. " + error, success: false });
     }
   }
 
@@ -35,32 +35,37 @@ class PlanetController {
     try {
       const { name, terrain, climate } = req.body;
 
-      ApiValidator.isRequired(name, "Nome do planeta é obrigatório");
-      ApiValidator.isRequired(terrain, "Terreno é obrigatório");
-      ApiValidator.isRequired(climate, "Clima é obrigatório");
+      const validation = new ApiValidation();
+      validation.isRequired(name, "Nome do planeta é obrigatório");
+      validation.isRequired(terrain, "Terreno é obrigatório");
+      validation.isRequired(climate, "Clima é obrigatório");
 
-      if (!ApiValidator.isValid())
+      if (!validation.isValid())
         return res
           .status(400)
-          .send({ errors: ApiValidator.errors(), success: false });
+          .send({ errors: validation.errors(), success: false });
 
       const apparitions = await PlanetRepository.fetchApparitionsByPlanet(name);
       const planets = await PlanetRepository.register({ name, terrain, climate, apparitions });
-      return res.status(200).send(planets);
+      return res.status(201).send({ success: true, data: planets });
     } catch (error) {
-      console.log(error);
-      res.status(500).send({ message: "Erro ao processar sua requisição" });
+      return res
+        .status(500)
+        .send({ message: "Erro ao processoar sua requisição. " + error, success: false });
     }
   }
 
   async getById(req, res) {
     try {
       const planet = await PlanetRepository.fetchById(req.params.id);
+
+      if (!planet) return res.status(404).send({ message: "Planeta inexistente", success: false });
+
       return res.status(200).send({ data: planet, success: true });
     } catch (error) {
-      res
+      return res
         .status(500)
-        .send({ message: "Erro ao processoar sua requisição", success: false });
+        .send({ message: "Erro ao processoar sua requisição. " + error, success: false });
     }
   }
 
@@ -69,7 +74,9 @@ class PlanetController {
       await PlanetRepository.remove(req.params.id);
       return res.status(200).send({ message: "Planeta removido com sucesso.", success: true });
     } catch (error) {
-      res.status(500).send({ message: "Erro ao processoar sua requisição", success: false });
+      return res
+        .status(500)
+        .send({ message: "Erro ao processoar sua requisição. " + error, success: false });
     }
   }
 }
