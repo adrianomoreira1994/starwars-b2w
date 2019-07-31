@@ -63,7 +63,9 @@ class UserController {
     try {
       const user = await repository.fetchByDocument(req.body.username);
 
-      if (!await bcrypt.compare(req.body.password, user.password)) res.status(200).send({ message: "Senhas não são iguais" });
+      if (!user) res.status(200).send({ success: false, message: "Oppss. Seu usuário está inválido" });
+
+      if (!await bcrypt.compare(req.body.password, user.password)) res.status(200).send({ success: false, message: "Oppss. A senha informada está inválida" });
 
       const payload = {
         name: user.name,
