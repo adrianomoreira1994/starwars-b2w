@@ -22,9 +22,7 @@ class PlanetController {
 
       return res.status(200).send({ data: await planetas, success: true });
     } catch (error) {
-      return res
-        .status(500)
-        .send({ message: "Erro ao processoar sua requisição", success: false });
+      return res.status(500).send({ message: "Erro ao processoar sua requisição", success: false });
     }
   }
 
@@ -36,9 +34,7 @@ class PlanetController {
 
       return res.status(200).send({ data: planet, success: true });
     } catch (error) {
-      return res
-        .status(500)
-        .send({ message: "Erro ao processoar sua requisição. " + error, success: false });
+      return res.status(500).send({ message: "Erro ao processoar sua requisição. " + error, success: false });
     }
   }
 
@@ -52,16 +48,12 @@ class PlanetController {
       validation.isRequired(climate, "Clima é obrigatório");
 
       if (!validation.isValid())
-        return res
-          .status(400)
-          .send({ errors: validation.errors(), success: false });
+        return res.status(400).send({ errors: validation.errors(), success: false });
 
       const planets = await PlanetRepository.register({ name, terrain, climate });
       return res.status(201).send({ success: true, data: planets });
     } catch (error) {
-      return res
-        .status(500)
-        .send({ message: "Erro ao processoar sua requisição. " + error, success: false });
+      return res.status(500).send({ message: "Erro ao processoar sua requisição. " + error, success: false });
     }
   }
 
