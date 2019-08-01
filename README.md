@@ -20,12 +20,12 @@ npm install
 
 ## Endpoints
 
-0. POST: /v1/api/users/authenticate - Parametros (username = documento, password)
-1. GET: /v1/api/planets - Listar todos os planetas cadastrados
-1. GET: /v1/api/planets/:planet - Listar planeta baseado no nome como parâmetro
-1. POST: /v1/api/planets - Cadastro de um novo planeta
-1. DELETE: /v1/api/planets/:id - Remoção de um planeta baseado no ID
-1. GET: /v1/api/planets/buscar/:id - Listar planeta baseado no ID
+0. POST: /api/users/authenticate - Parametros (username = documento, password)
+1. GET: /api/planets - Listar todos os planetas cadastrados
+1. GET: /api/planets/:planet - Listar planeta baseado no nome como parâmetro
+1. POST: /api/planets - Cadastro de um novo planeta
+1. DELETE: /api/planets/:id - Remoção de um planeta baseado no ID
+1. GET: /api/planets/buscar/:id - Listar planeta baseado no ID
 
 ##
 
