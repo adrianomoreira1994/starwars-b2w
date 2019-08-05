@@ -16,6 +16,7 @@
     "nodemon": "^1.19.1"
   },
   "scripts": {
-    "dev": "nodemon ./bin/server.js"
+    "dev": "nodemon ./bin/server.js",
+    "start": "node ./bin/server.js"
   }
 }

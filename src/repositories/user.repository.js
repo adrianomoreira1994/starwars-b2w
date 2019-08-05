@@ -2,7 +2,7 @@ const User = require("../schemas/user.schema");
 
 class UserRepository {
   async fetch() {
-    return await User.find();
+    return await User.find({});
   }
 
   async fetchByDocument(document) {

@@ -1,7 +1,8 @@
+const md5 = require("md5");
+
 const ApiValidation = require("../validators/api.validator");
 const repository = require("../repositories/user.repository");
 const authService = require("../services/auth.service");
-const md5 = require("md5");
 
 class UserController {
   async index(req, res) {
@@ -68,7 +69,7 @@ class UserController {
       });
 
       if (!userAuthenticated)
-        return res.status(404).send({ success: false, message: "Oppss. Seu usuário ou senha está inválido" });
+        return res.status(400).send({ success: false, message: "Oppss. Seu usuário ou senha está inválido" });
 
       const token = await authService.generateToken({
         name: userAuthenticated.name,
