@@ -1,7 +1,11 @@
 const routes = require("express").Router();
 const planetController = require("./controllers/planet.controller");
 const userController = require("./controllers/user.controller");
+const indexController = require("./controllers/index.controller");
 const authService = require('./services/auth.service');
+
+// Index
+routes.get("/", indexController.index);
 
 // Planets
 routes.get("/api/planets", authService.authorize, planetController.index);
