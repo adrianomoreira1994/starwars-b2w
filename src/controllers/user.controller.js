@@ -69,7 +69,7 @@ class UserController {
       });
 
       if (!userAuthenticated)
-        return res.status(400).send({ success: false, message: "Oppss. Seu usuário ou senha está inválido" });
+        return res.status(200).send({ success: false, message: "Oppss. Seu usuário ou senha está inválido" });
 
       const token = await authService.generateToken({
         name: userAuthenticated.name,
@@ -78,7 +78,16 @@ class UserController {
         id: userAuthenticated._id
       });
 
-      return res.status(200).send({ success: true, data: { token } });
+      return res.status(200).send({
+        success: true, data: {
+          token,
+          user: {
+            name: userAuthenticated.name,
+            document: userAuthenticated.document,
+            email: userAuthenticated.email
+          }
+        }
+      });
     } catch (error) {
       return res.status(500).send({ message: "Erro ao processoar sua requisição. " + error, success: false });
     }
